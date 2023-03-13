@@ -13,12 +13,19 @@ router.get('/', (req, res) => {
 });
 
 //get 1
-// router.get('/user/:id', (req, res) => {
-//     User.findById({ _id: req.params.})
-// })
+router.get('/:id', (req, res) => {
+    User.findById({ _id: req.params.id})
+    .then((user) => {
+        res.json(user);
+    })
+    .catch((err) => {
+        console.log(err);
+        res.status(500).json(err);
+    });
+})
 
 //POST
-//body = username, email.
+//body = username, email. rejects if email is not email.
 router.post('/', (req, res) => {
     User.create(req.body)
     .then((user) => {

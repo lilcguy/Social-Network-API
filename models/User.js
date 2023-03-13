@@ -12,7 +12,7 @@ const userSchema = new mongoose.Schema(
         type: String, 
         unique: true, 
         required: true,  
-        match: /^\S+@\S+\.\S+$/
+        match: /^\S+@\S+\.\S+$/ //regex
     },
     friends: [
         {
