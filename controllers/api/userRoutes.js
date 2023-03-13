@@ -22,7 +22,7 @@ router.get('/:id', (req, res) => {
         console.log(err);
         res.status(500).json(err);
     });
-})
+});
 
 //POST
 //body = username, email. rejects if email is not email.
@@ -40,6 +40,15 @@ router.post('/', (req, res) => {
 //PUT
 
 //DELETE
+router.delete('/:id', (req, res) => {
+    User.findByIdAndDelete({_id: req.params.id})
+    .then((deletedUser) => {
+        res.json("Deleted user at id: " + deletedUser._id + " with username: " + deletedUser.username);
+    }).catch((err) => {
+        console.log(err);
+        res.status(500).json(err);
+    });
+});
 
 
 module.exports = router;
