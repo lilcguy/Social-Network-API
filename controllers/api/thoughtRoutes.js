@@ -27,6 +27,7 @@ router.get('/:id', async (req, res) => {
 
 //post (push to user's thoughts array field)
 //thoughtText, username, userId
+    //does it need userId? there is no field for it in the model.
 router.post('/', (req, res ) => {
     Thought.create(req.body)
     .then((thought) => {

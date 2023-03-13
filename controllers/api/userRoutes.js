@@ -96,7 +96,7 @@ router.post('/:userId/friends/:friendId', (req, res) => {
 
     User.findOneAndUpdate(
         {_id: req.params.userId},
-        {addToSet: {friends: {_id: req.params.friendId}}},
+        {$push: {friends: {_id: req.params.friendId}}}, //$push instead of addToSet
         {new:true}
     ).then((updatedUsers) => {
         res.json(updatedUsers + " Request resolved.")
@@ -110,6 +110,8 @@ router.post('/:userId/friends/:friendId', (req, res) => {
 
 
 
-//router.delete
+//DELETE
+
+//friends list routes --^
 
 module.exports = router;
