@@ -59,7 +59,7 @@ const thoughtSchema = new mongoose.Schema(
         toJSON: {
             virtuals: true
         },
-        id: true,
+        id: false,
     
     }
 );
@@ -79,6 +79,6 @@ transforms the value of a field when it is read from the database.
 
 
 //init model
-const Thought = model('Thought', thoughtSchema);
+const Thought = mongoose.model('Thought', thoughtSchema);
 
 module.exports = Thought;
