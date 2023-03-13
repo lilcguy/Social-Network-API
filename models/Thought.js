@@ -64,7 +64,7 @@ const thoughtSchema = new mongoose.Schema(
     }
 );
 
-const thoughtvirtual = thoughtSchema.virtuals('reactionCount').get(function() {
+thoughtSchema.virtual('reactionCount').get(function() {
     return this.reactions.length;
 });
 
@@ -74,9 +74,6 @@ a virtual is a property that is computed from other fields and does
 not exist in the database, while a getter is a method that 
 transforms the value of a field when it is read from the database.
 */
-
-
-
 
 //init model
 const Thought = mongoose.model('Thought', thoughtSchema);

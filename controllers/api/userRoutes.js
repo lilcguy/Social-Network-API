@@ -86,19 +86,29 @@ router.delete('/:id', (req, res) => {
 
     //user.friends 
     //addToSet?
-router.post('/:userId/friends/:friendId', async (req, res) => {
-    try
-    {
-    const user = await User.findById({ _id: req.params.userId});
-    const friend = await User.findById({ _id: req.params.friendId});
-    user.friends.addToSet(friend);
-    res.json(`${friend.username} has been added to ${user.username}'s friend list!`);
-    console.log(user.friends);
-    }
-    catch (error) {
-        console.log(error);
-    }
+router.post('/:userId/friends/:friendId', (req, res) => {
+
+    // const user = await User.findById({ _id: req.params.userId});
+    // const friend = await User.findById({ _id: req.params.friendId});
+    // user.friends.addToSet(friend);
+    // res.json(`${friend.username} has been added to ${user.username}'s friend list!`);
+    // console.log(user.friends);
+
+    User.findOneAndUpdate(
+        {_id: req.params.userId},
+        {addToSet: {friends: {_id: req.params.friendId}}},
+        {new:true}
+    ).then((updatedUsers) => {
+        res.json(updatedUsers + " Request resolved.")
+    }).catch((err) => {
+        console.log(err);
+        res.status(500).json(err);
+    }); 
+    
+ 
 });
+
+
 
 //router.delete
 
