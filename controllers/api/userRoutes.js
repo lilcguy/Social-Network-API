@@ -4,9 +4,10 @@ const User = require('./../../models/User');
 
 //get all
 
-router.get('/', (req, res) => {
+router.get('/', (req, res) => { 
     User.find({})
     .populate('friends')
+    .populate('thoughts')
     .then((users) => {
         res.json(users);
         
@@ -29,9 +30,10 @@ router.get('/', async (req, res) => {
 */
 
 //get 1
-router.get('/:id', (req, res) => {
+router.get('/:id', (req, res) => { 
     User.findById({ _id: req.params.id})
     .populate('friends')
+    .populate('thoughts')
     .then((user) => {
         res.json(user);
     })
