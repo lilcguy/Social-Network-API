@@ -66,11 +66,20 @@ router.put('/:id', (req, res ) => {
         }).catch((err) => {
             console.log(err);
             res.status(500).json(err);
-        })
+        });
 
 
 });
 
 //delete
+router.delete('/:id', (req, res) => {
+    Thought.findByIdAndDelete({_id: req.params.id})
+    .then((deletedThought) => {
+        res.json(`Deleted thought with id: ${deletedThought._id}`);
+    }).catch((err) => {
+        console.log(err);
+        res.status(500).json(err);
+    });
+});
 
 module.exports = router;
