@@ -6,7 +6,8 @@ const User = require('./../../models/User');
 //get all
 router.get('/', async (req, res) => {
     try {
-        const thoughts = await Thought.find({});
+        const thoughts = await Thought.find({})
+        .populate('reactions') //populate reactions
         res.json(thoughts);
     } catch (error) {
         console.log(error);
@@ -18,7 +19,8 @@ router.get('/', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
     try {
-        const thought = await Thought.findById({_id: req.params.id});
+        const thought = await Thought.findById({_id: req.params.id})
+        .populate('reactions'); //populate reactions
         res.json(thought);
     } catch (error) {
         console.log(error);
@@ -27,7 +29,6 @@ router.get('/:id', async (req, res) => {
 
 //post (push to user's thoughts array field)
 //thoughtText, username, userId
-    
 router.post('/', async (req, res) => {
     //find the user, make the thought, push to the user's thoughts array.
     
@@ -35,9 +36,6 @@ router.post('/', async (req, res) => {
     //find returns an array even if only 1 doc is returned. so i used findOne.
 
     const theThought = await Thought.create(req.body);
-
-
-
     //console.log(theUser);
     //console.log(theThought);
 
@@ -47,11 +45,6 @@ router.post('/', async (req, res) => {
         {new: true});
 
     res.json(update);
- 
-
-
-
-
 }); 
 
 
@@ -82,4 +75,31 @@ router.delete('/:id', (req, res) => {
     });
 });
 
+//reaction routes --v
+    //reaction: reactionBody, username
+//post reaction and push to thought's reaction array
+        //populate reaction arrays in thought GETs.**
+router.post('/:thoughtId/reactions', (req, res) => {
+
+    Thought.findByIdAndUpdate(
+        {_id: req.params.thoughtId},
+        {$push: {reactions: req.body}},
+        {new: true}
+        ).then((updatedData) => {
+            res.json(updatedData);
+        }).catch((err) => {
+            console.log(err);
+            res.status(500).json(err);
+            
+        });
+
+    
+});
+
+router.delete('/:thoughtId/reactions', (req, res) => {
+
+});
+
+
+//reaction routes --^
 module.exports = router;
