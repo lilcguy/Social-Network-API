@@ -82,22 +82,12 @@ router.delete('/:id', (req, res) => {
 
 
 //friends list routes --V
-    //adding (pushing) friendId to userId's friend list
 
-    //user.friends 
-    //addToSet?
 router.post('/:userId/friends/:friendId', (req, res) => {
-
-    // const user = await User.findById({ _id: req.params.userId});
-    // const friend = await User.findById({ _id: req.params.friendId});
-    // user.friends.addToSet(friend);
-    // res.json(`${friend.username} has been added to ${user.username}'s friend list!`);
-    // console.log(user.friends);
-
     User.findOneAndUpdate(
         {_id: req.params.userId},
-        {$push: {friends: {_id: req.params.friendId}}}, //$push instead of addToSet
-        {new:true}
+        {$push: {friends: {_id: req.params.friendId}}}, 
+        {new: true}
     ).then((updatedUsers) => {
         res.json(updatedUsers + " Request resolved.")
     }).catch((err) => {
@@ -108,10 +98,20 @@ router.post('/:userId/friends/:friendId', (req, res) => {
  
 });
 
-
-
 //DELETE
-
+router.delete('/:userId/friends/:friendId', (req, res) => {
+    User.findByIdAndUpdate(
+            {_id: req.params.userId},
+            {$pull: {friends: req.params.friendId}},
+            {new: true}
+        ).then((userData) => {
+            res.json(userData);
+        })
+        .catch((err) => {
+            console.log(err);
+            res.status(500).json(err);
+        });
+});
 //friends list routes --^
 
 module.exports = router;
