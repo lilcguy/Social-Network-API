@@ -76,9 +76,10 @@ router.delete('/:id', (req, res) => {
 });
 
 //reaction routes --v
-    //reaction: reactionBody, username
+
+//reaction: reactionBody, username
 //post reaction and push to thought's reaction array
-        //populate reaction arrays in thought GETs.**
+        
 router.post('/:thoughtId/reactions', (req, res) => {
 
     Thought.findByIdAndUpdate(
@@ -96,7 +97,18 @@ router.post('/:thoughtId/reactions', (req, res) => {
     
 });
 
-router.delete('/:thoughtId/reactions', (req, res) => {
+//use req.body for reactionId, or put in params?
+router.delete('/:thoughtId/reactions/:reactionId', (req, res) => {
+    Thought.findByIdAndUpdate(
+            {_id: req.params.thoughtId},
+            {$pull: {reactions: {_id: req.params.reactionId}}},
+            {new:true})
+        .then((deletedReaction) => {
+            res.json(deletedReaction);
+        }).catch((err) => {
+            console.log(err);
+            res.status(500).json(err);
+        });
 
 });
 
